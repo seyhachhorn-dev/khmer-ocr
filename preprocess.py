@@ -16,6 +16,7 @@ height, width = im.shape[:2]
 print("Height:", height)
 print("Width:", width)
 
+
 # default hieght for khmer text
 target_height = 48
 
@@ -27,33 +28,43 @@ print("new width:", new_width)
 
 
 # resize the original image
-resized_img = cv.resize(im,(target_height,new_width))
+resized_img = cv.resize(im,(new_width,target_height))
 
-chunk_width = 100
-overlap=16
+# cut from 0 to 100 keep same height
+first_chunk = resized_img[:, 0:100]
 
-step = chunk_width - overlap
+second_chunk = resized_img[:, 84:184]
 
-chunks = []
-
-for start_x in range(0,width, step):
-    end_x = start_x + chunk_width
-
-    chunk = resized_img[:, start_x:end_x]
-
-    chunks.append(chunk)
-
-    print(
-        f"Chunk {len(chunks)}: "
-        f"x={start_x} to {end_x}"
-    )
+third_chunk = resized_img[:, 168:268]
 
 
 
 
-# cv.imshow("Original", im)
-# cv.imshow("Resized Img", resized_img)
+cv.imshow("Original", im)
+cv.imshow("Resized Img", resized_img)
+cv.imshow("First Chunk", first_chunk)
+cv.imshow("Second Chunk", second_chunk)
+cv.imshow("third_chunk ", third_chunk)
+
+
+
+
 
 cv.waitKey(0)
 cv.destroyAllWindows()
 
+
+# chunk_width = 100
+# overlap=16
+
+# step = chunk_width - overlap
+
+# chunks = []
+
+# for start_x in range(0,new_width, step):
+
+#     end_x = start_x + chunk_width
+
+#     chunk = resized_img[:, start_x:end_x]
+
+#     chunks.append(chunk)
