@@ -47,6 +47,21 @@ for i in range(0,new_width,step_share_region):
     j = i + chunk_width
     chunk = resized_img[:,i:j]
 
+    if chunk.shape[1] < chunk_width:
+        padding = chunk_width - chunk.shape[1]
+
+        chunk = cv.copyMakeBorder(
+            chunk,
+            0,
+            0,
+            0,
+            padding,
+            cv.BORDER_CONSTANT,
+            value=(255,255,255)
+        )
+
+    
+
 print(
         "start:",
         i,
@@ -66,18 +81,3 @@ cv.imshow("Resized Img", resized_img)
 cv.waitKey(0)
 cv.destroyAllWindows()
 
-
-# chunk_width = 100
-# overlap=16
-
-# step = chunk_width - overlap
-
-# chunks = []
-
-# for start_x in range(0,new_width, step):
-
-#     end_x = start_x + chunk_width
-
-#     chunk = resized_img[:, start_x:end_x]
-
-#     chunks.append(chunk)
