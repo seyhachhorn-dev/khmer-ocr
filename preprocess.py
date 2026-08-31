@@ -31,20 +31,33 @@ print("new width:", new_width)
 resized_img = cv.resize(im,(new_width,target_height))
 
 # cut from 0 to 100 keep same height
-first_chunk = resized_img[:, 0:100]
-
-second_chunk = resized_img[:, 84:184]
-
-third_chunk = resized_img[:, 168:268]
+# first_chunk = resized_img[:, 0:100]
 
 
+chunk_width = 100
+overlap = 16
+# share region overlap to make second chunk know the first chunk info be 
+# be able to predict
+step_share_region = chunk_width - overlap
 
+# start from 0 to 100 and keep plus 16 every step to keep share region
+# i = start x axis & j = end x axis
+
+for i in range(0,new_width,step_share_region):
+    j = i + chunk_width
+    chunk = resized_img[:,i:j]
+
+print(
+        "start:",
+        i,
+        "end:",
+        j,
+        "shape:",
+        chunk.shape
+    )
 
 cv.imshow("Original", im)
 cv.imshow("Resized Img", resized_img)
-cv.imshow("First Chunk", first_chunk)
-cv.imshow("Second Chunk", second_chunk)
-cv.imshow("third_chunk ", third_chunk)
 
 
 
