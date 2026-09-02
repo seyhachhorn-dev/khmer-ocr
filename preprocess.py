@@ -1,5 +1,6 @@
 import cv2 as cv
 import torch
+import torch.nn as nn
 
 
 im = cv.imread('images/khmer-text-line.png')
@@ -7,9 +8,7 @@ im = cv.imread('images/khmer-text-line.png')
 if im is None:
     raise ValueError('can not load image')
 
-gray = cv.cvtColor(im,(0,255,128))
 
-cv.imshow("gray",gray)
 
 
 # original size:
@@ -83,12 +82,31 @@ print("Before:", tensor.shape)
 tensor = tensor.permute(2, 0, 1)
 print("After permute:", tensor.shape)
 
-tensor = tensor.float() / 255.0
+tensor = tensor.float()  /255.0
 print("Min:", tensor.min())
 print("Max:", tensor.max())
 
 tensor = tensor.unsqueeze(0)
 print('unsqueeze',tensor.shape)
+
+
+conv = nn.Conv2d(
+    in_channels=3,
+    out_channels=8,
+    kernel_size=3,
+    padding=1,
+)
+
+
+features = conv(tensor)
+relu = nn.ReLU()
+
+features = relu(features)
+
+pool = nn.MaxPool2d(kernel_size=2)
+
+features = pool(features)
+
 
 cv.imshow("Original", im)
 cv.imshow("Resized Img", resized_img)
